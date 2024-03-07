@@ -15,13 +15,16 @@ async function main() {
   //   },
   // });
   // console.log({ post1 });
-
-  const newuser = await prisma.user.create({
-    data: {
-      name: 'Johannes',
-      email: 'johannes@me.com',
-    },
-  });
+  // const newuser = await prisma.user.create({
+  //   data: {
+  //     firstName: 'Johannes',
+  //     lastName: 'Meister',
+  //     email: 'johannes1@me.com',
+  //     phoneNumber: '353443',
+  //     password: '121212121',
+  //   },
+  // });
+  //await prisma.user.deleteMany({});
 }
 
 // execute the main function

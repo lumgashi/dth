@@ -6,6 +6,7 @@ export type AppConfig = {
   apiPrefix: string;
   frontendDomain?: string;
   jwtSecret: string;
+  tokenExpiresIn: string;
 };
 
 export type DatabaseConfig = {
