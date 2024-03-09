@@ -6,6 +6,7 @@ import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'types';
 import { validationOptions } from './utils/functions';
+import { initCategories } from './utils/functions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -35,6 +36,13 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  /**
+   *=============================================================
+   * START STARTUP FUNCTIONS
+   *=============================================================
+   */
+  initCategories();
 
   await app.listen(process.env.PORT || 3000);
 }
