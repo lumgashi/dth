@@ -15,7 +15,9 @@ model Post {
   slug  String @unique
   title String
   body  String
-  categories Category[]
+
+  categoryIds String[] @db.ObjectId
+  categories  Category[] @relation(fields: [categoryIds], references: [id])
 
   @@map("posts")
 }
@@ -28,19 +30,22 @@ model User {
   phoneNumber String
   role        String     @default("USER")
   password    String
-  categories  Category[]
-
+  categoriesIds                  String[]         @db.ObjectId
+  categories                     Category[]         @relation(fields: [categoriesIds], references: [id])
   @@map("users")
 }
 
 model Category {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   name   String  @unique 
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String? @db.ObjectId
 
-  post Post? @relation(fields: [postId], references: [id])
-  postId String? @db.ObjectId
+  // userIDs String[] @db.ObjectId
+  // users   User[]   @relation(fields: [userIDs], references: [id])
 
+  user                    User[]                 @relation(fields: [userIds], references: [id])
+  userIds                 String[]               @db.ObjectId
+
+  post Post[] @relation(fields: [postIDs], references: [id])
+  postIDs String[] @db.ObjectId
   @@map("categories")
 }

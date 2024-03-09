@@ -2,6 +2,7 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -37,6 +38,15 @@ export class CategoriesService {
   async findOne(id: string) {
     try {
       const category = await this.prisma.category.findUnique({ where: { id } });
+
+      if (!category) {
+        throw new NotFoundException({
+          status: false,
+          code: HttpStatus.NOT_FOUND,
+          message: 'Category not found',
+          error: 'Category not found',
+        });
+      }
 
       return customResponse({
         status: true,

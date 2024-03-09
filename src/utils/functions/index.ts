@@ -5,3 +5,4 @@ export * from './comparePassword';
 export * from './signToken';
 export * from './seedData';
 export * from './startup';
+export * from './connect-disconnect-rs';
