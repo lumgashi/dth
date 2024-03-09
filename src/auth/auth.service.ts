@@ -13,6 +13,7 @@ import { SuccessResponse, ErrorResponse, tokenPayload } from 'types';
 import { Request, Response } from 'express';
 import { customResponse } from '../utils/functions';
 import { LoginDto } from './dto/loginDto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -76,16 +77,17 @@ export class AuthService {
     }
   }
 
-  async login(
-    loginDto: LoginDto,
-  ) /* : Promise<SuccessResponse | ErrorResponse>  */ {
+  async login(loginDto: LoginDto): Promise<SuccessResponse | ErrorResponse> {
     const { email, password } = loginDto;
+    console.log('ddd');
 
     const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
     });
+
+    console.log('user', user);
 
     if (!user) {
       throw new BadRequestException(
@@ -107,7 +109,7 @@ export class AuthService {
       };
 
       const accessToken = await signToken(payload);
-
+      console.log('jher');
       return customResponse({
         status: true,
         code: HttpStatus.OK,
@@ -126,5 +128,25 @@ export class AuthService {
         }),
       );
     }
+  }
+
+  async getMe(currentUser: User): Promise<SuccessResponse | ErrorResponse> {
+    //console.log(currentUser);
+    if (!currentUser) {
+      throw new BadRequestException(
+        customResponse({
+          status: false,
+          code: HttpStatus.BAD_REQUEST,
+          message: 'No user was found.',
+          error: 'No user was found.',
+        }),
+      );
+    }
+
+    return customResponse({
+      status: true,
+      code: HttpStatus.OK,
+      data: currentUser,
+    });
   }
 }

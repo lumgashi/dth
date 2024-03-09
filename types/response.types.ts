@@ -1,8 +1,8 @@
 export type SuccessResponse = {
   status: boolean;
   code: number;
-  message: string;
-  data: object | Array<any> | any;
+  message?: string;
+  data?: object | Array<any> | any;
   request?: {
     url: string;
     method: string;
@@ -12,7 +12,7 @@ export type SuccessResponse = {
 export type ErrorResponse = {
   status: boolean;
   code: number;
-  message: string;
+  message?: string;
   error: object | Array<any> | any;
   token_expired?: boolean;
   request?: {
