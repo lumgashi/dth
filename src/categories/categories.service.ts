@@ -15,7 +15,9 @@ export class CategoriesService {
 
   async findAll() {
     try {
-      const categories = await this.prisma.category.findMany({});
+      const categories = await this.prisma.category.findMany({
+        select: { id: true, name: true },
+      });
 
       return customResponse({
         status: true,
@@ -37,7 +39,10 @@ export class CategoriesService {
 
   async findOne(id: string) {
     try {
-      const category = await this.prisma.category.findUnique({ where: { id } });
+      const category = await this.prisma.category.findUnique({
+        where: { id },
+        select: { name: true, id: true },
+      });
 
       if (!category) {
         throw new NotFoundException({
