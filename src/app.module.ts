@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
+import { PaginateModule } from './paginate/paginate.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CategoriesModule } from './categories/categories.module';
     AuthModule,
     PostsModule,
     CategoriesModule,
+    PaginateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
