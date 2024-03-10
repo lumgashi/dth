@@ -3,7 +3,7 @@ import { PaginateService } from './paginate.service';
 
 @Global()
 @Module({
-  controllers: [],
+  exports: [PaginateService],
   providers: [PaginateService],
 })
 export class PaginateModule {}

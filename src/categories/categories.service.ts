@@ -8,16 +8,60 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { customResponse } from 'src/utils/functions';
+import { GetCategoriesDto } from './dto';
+import { Category, Prisma } from '@prisma/client';
+import { PaginateService } from 'src/paginate/paginate.service';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private paginate: PaginateService,
+  ) {}
 
-  async findAll() {
+  async findAll(getCategories: GetCategoriesDto) {
     try {
-      const categories = await this.prisma.category.findMany({
-        select: { id: true, name: true },
+      //console.log(getCategories);
+      const { pagination, page, limit, name } = getCategories;
+
+      const query = {
+        //isActive: true,
+        name,
+      };
+
+      const categories = await this.paginate.paginator<
+        Category,
+        Prisma.CategoryWhereInput,
+        Prisma.CategorySelect,
+        Prisma.CategoryInclude,
+        | Prisma.CategoryOrderByWithRelationInput
+        | Prisma.CategoryOrderByWithRelationInput[]
+      >({
+        paginate: { pagination, page, limit },
+        model: this.prisma.category,
+        condition: {
+          where: {
+            //isActive,
+            ...query,
+          },
+        },
+        includeOrSelect: {
+          operator: 'select',
+          value: {
+            id: true,
+            name: true,
+          },
+        },
+        // select: {
+        //   id: true,
+        //   name: true,
+        // },
+        // orderBy: [{ createdAt: 'asc' }],
       });
+
+      // const categories = await this.prisma.category.findMany({
+      //   select: { id: true, name: true },
+      // });
 
       return customResponse({
         status: true,

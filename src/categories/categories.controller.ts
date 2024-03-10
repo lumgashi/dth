@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -16,6 +17,7 @@ import { Roles } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { UserRole } from 'types';
+import { GetCategoriesDto } from './dto';
 
 @Controller('categories')
 @ApiTags('categories')
@@ -28,8 +30,9 @@ export class CategoriesController {
    * @access      Private [User]
    */
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Query() getCategories: GetCategoriesDto) {
+    console.log(getCategories);
+    return this.categoriesService.findAll(getCategories);
   }
 
   /**
