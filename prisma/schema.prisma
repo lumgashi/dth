@@ -41,6 +41,10 @@ model User {
   categoriesIds String[]   @db.ObjectId
   categories    Category[] @relation(fields: [categoriesIds], references: [id])
 
+  
+  following   Follow[] @relation("FollowToUser")
+  followedBy Follow[] @relation("FollowFromUser")
+
 
  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,4 +66,14 @@ model Category {
   postIDs String[] @db.ObjectId
 
   @@map("categories")
+}
+
+
+model Follow {
+ id    String @id @default(auto()) @map("_id") @db.ObjectId
+  from     User   @relation("FollowFromUser", fields: [fromId], references: [id])
+  fromId   String @db.ObjectId
+  to       User   @relation("FollowToUser", fields: [toId], references: [id])
+  toId     String @db.ObjectId
+  isActive Boolean
 }
