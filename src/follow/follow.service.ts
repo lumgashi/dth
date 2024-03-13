@@ -202,7 +202,10 @@ export class FollowService {
     return `This action updates a #${id} follow`;
   }
 
-  async unfollow(currentUser: User, userId: string) {
+  async unfollow(
+    currentUser: User,
+    userId: string,
+  ): Promise<SuccessResponse | ErrorResponse> {
     const followExists = await this.prisma.follow.findFirst({
       where: {
         toId: userId,
@@ -260,7 +263,10 @@ export class FollowService {
     }
   }
 
-  async searchFollowedUsers(currentUser: User, getFollowDto: GetFollowDto) {
+  async searchFollowedUsers(
+    currentUser: User,
+    getFollowDto: GetFollowDto,
+  ): Promise<SuccessResponse | ErrorResponse> {
     let allFollowingUsers: Follow[];
     const { userHandle, pagination, page, limit } = getFollowDto;
     // if (!userHandle || userHandle.length === 0) {
