@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PaginateModule } from './paginate/paginate.module';
+import { FollowModule } from './follow/follow.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PaginateModule } from './paginate/paginate.module';
     PostsModule,
     CategoriesModule,
     PaginateModule,
+    FollowModule,
   ],
   controllers: [AppController],
   providers: [AppService],

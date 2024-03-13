@@ -79,6 +79,11 @@ export class UsersService {
         where: {
           id,
         },
+        include: {
+          followedBy: true,
+          following: true,
+          categories: true,
+        },
       });
 
       if (!user) {
@@ -96,7 +101,7 @@ export class UsersService {
         status: true,
         code: HttpStatus.OK,
         //message: 'User updated successfully',
-        data: {},
+        data: user,
       });
     } catch (error) {
       throw new BadRequestException(

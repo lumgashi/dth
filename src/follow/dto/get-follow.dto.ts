@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
-export class GetUsersDto {
+export class GetFollowDto {
   @ApiProperty({ description: 'Number of page', example: '1' })
   @IsOptional()
   page?: number;
@@ -14,21 +14,11 @@ export class GetUsersDto {
   @IsOptional()
   pagination?: boolean;
 
-  @ApiProperty({ description: 'User first name', example: 'John' })
-  @IsOptional()
-  @IsString()
-  firstName?: string;
-
-  @ApiProperty({ description: 'User last name', example: 'Doe' })
-  @IsOptional()
-  @IsString()
-  lastName?: string;
-
   @ApiProperty({
-    description: 'User handle',
-    example: '@user134534535',
+    description: 'Handle to search users',
+    example: '@newuserherer',
   })
-  @IsOptional()
   @IsString()
-  handle?: string;
+  @IsOptional()
+  userHandle?: string;
 }
