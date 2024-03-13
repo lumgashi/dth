@@ -14,6 +14,7 @@ import { Request, Response } from 'express';
 import { customResponse } from '../utils/functions';
 import { LoginDto } from './dto/loginDto';
 import { User } from '@prisma/client';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,8 @@ export class AuthService {
     try {
       const hashedPassword = await hashPassword(password);
 
+      const randomHandler = `${firstName}${randomBytes(10).toString('hex')}`;
+
       const user = await this.prisma.user.create({
         data: {
           email,
@@ -55,6 +58,7 @@ export class AuthService {
           lastName,
           password: hashedPassword,
           phoneNumber,
+          handle: randomHandler,
         },
       });
 

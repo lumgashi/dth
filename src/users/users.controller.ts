@@ -6,25 +6,28 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUsersDto } from './dto';
+import { ReqUser, Roles } from 'src/auth/decorators';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { UserRole } from 'types';
+import { User } from '@prisma/client';
 
 @Controller('users')
 @ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() getusers: GetUsersDto) {
+    return this.usersService.findAll(getusers);
   }
 
   @Get(':id')
@@ -32,9 +35,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER, UserRole.MEMBER, UserRole.AUTHOR)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@ReqUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(currentUser, updateUserDto);
   }
 
   @Delete(':id')
