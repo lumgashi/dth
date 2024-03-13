@@ -50,7 +50,7 @@ export class FollowService {
       },
     });
 
-    if (followExists) {
+    if (followExists.isActive) {
       throw new BadRequestException(
         customResponse({
           status: false,
@@ -58,6 +58,23 @@ export class FollowService {
           message: 'You are already following this user',
         }),
       );
+    }
+
+    if (!followExists.isActive) {
+      const updateFollow = await this.prisma.follow.update({
+        where: {
+          id: followExists.id,
+        },
+        data: {
+          isActive: true,
+        },
+      });
+      return customResponse({
+        status: true,
+        code: HttpStatus.CREATED,
+        message: 'User followed successfully',
+        data: updateFollow,
+      });
     }
 
     try {
